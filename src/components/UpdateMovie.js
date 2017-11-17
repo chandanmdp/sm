@@ -11,8 +11,12 @@ class updateMovie extends Component {
           name: props.movie.name,
           year: props.movie.year,
           description: props.movie.description
-      }
-    }
+      },
+      clicked: false
+    };
+  }
+  componentWillMount(){
+    this.setState({clicked:false});
   }
 
   handleNameChange(event){
@@ -66,16 +70,25 @@ class updateMovie extends Component {
     }
   }
 
+  handleClick(){
+    this.setState({clicked:true});
+  }
+
   render () {
     return (
-      <div className="update-block">
-        <h4 className="text-success text-center margin-left"><u>Update movie</u></h4>
-        <form onSubmit={this.updateMovie.bind(this)} className="margin-left" >
-          <label>Movie name :<input type="text" ref="name" placeholder="Name" className="form-control input-width" value={this.state.movie.name} onChange={this.handleNameChange.bind(this)} required/></label><br/>
-          <label>Release year :<input type="number" ref="year" placeholder="Year" className="form-control input-width" value={this.state.movie.year} onChange={this.handleYearChange.bind(this)} required/></label><br />
-          <label>Movie description :<textarea ref="description" placeholder="Write movie description" className="form-control" rows="4" cols="50" value={this.state.movie.description} onChange={this.handleDescriptionChange.bind(this)} required/></label><br />
-          <button type="submit">Update movie</button>
-        </form>
+      <div>
+        <button className="btn btn-primary margin margin-left" onClick={this.handleClick.bind(this)}>Edit Movie</button>
+        <div className={this.state.clicked===false? "hid": ""}>
+          <div className="update-block">
+            <h4 className="text-success text-center margin-left"><u>Update movie</u></h4>
+            <form onSubmit={this.updateMovie.bind(this)} className="margin-left" >
+              <label>Movie name :<input type="text" ref="name" placeholder="Name" className="form-control input-width" value={this.state.movie.name} onChange={this.handleNameChange.bind(this)} required/></label><br/>
+              <label>Release year :<input type="number" ref="year" placeholder="Year" className="form-control input-width" value={this.state.movie.year} onChange={this.handleYearChange.bind(this)} required/></label><br />
+              <label>Movie description :<textarea ref="description" placeholder="Write movie description" className="form-control" rows="4" cols="50" value={this.state.movie.description} onChange={this.handleDescriptionChange.bind(this)} required/></label><br />
+              <button type="submit">Update movie</button>
+            </form>
+          </div>
+        </div>
       </div>
 
     )

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Movie from './Movie';
 import ShowMovie from './ShowMovie';
+import AddMovie from './AddMovie';
 import MyJson from '../json/movies.json';
 
 class MoviesList extends Component {
@@ -37,27 +37,16 @@ class MoviesList extends Component {
     )
   }
 
-  addMovie(event){
-    event.preventDefault();
-    let name = this.refs.name.value;
-    let year = this.refs.year.value;
-    let description = this.refs.description.value;
-    if (name !== '' && year !== '' && description !== ''){
+  addMovie(Name,Year,Description){
+    var Id = this.state.movies.length
       this.setState(
         {
-          movies: this.state.movies.concat({name,year,description}),
+          movies: this.state.movies.concat({id:Id+1,name:Name,year:Year,description:Description}),
           search_name: '',
           search_year: '',
           add_movie: true
         }
       )
-      alert('movie added');
-      this.refs.name.value= '';
-      this.refs.year.value = '';
-      this.refs.description.value = '';
-    }else{
-      alert('Please fill up all fields');
-    }
   }
 
   showThisMovie(name){
@@ -106,6 +95,7 @@ class MoviesList extends Component {
       (movie) => {
         var counter = 0;
         var movies_array = movie.name.split(' ');
+
         movies_array.map(item =>
           {
             if (item.toLowerCase().indexOf(this.state.search_name.toLowerCase()) === 0) {
@@ -134,22 +124,17 @@ class MoviesList extends Component {
 
     if (commonValues.length > 0){
       var element =  commonValues.map((movie) => {
-        return <Movie movie={movie} key={movie.name} onShow = {this.showThisMovie.bind(this)}/>
-        })
+        return (
+          <div className="block">
+            <li className="text-bigger text-info text-center margin" >
+              <span className="movie-link" onClick={this.showThisMovie.bind(this,movie.name)}>{movie.name}</span>
+            </li>
+         </div>
+        )
+      })
     }
     else {
-       element = <li className = "new-movie">
-                    <div>
-                      <p className="text-danger text-center">No movies found.</p>
-                      <h4 className="text-info margin-left">Add a new movie</h4>
-                      <form onSubmit={this.addMovie.bind(this)} className="margin-left" >
-                        <label>Movie name :<input type="text" ref="name" placeholder="Name" className="form-control input-width" required/></label><br/>
-                        <label>Release year :<input type="number" ref="year" placeholder="Year" className="form-control input-width" required/></label><br />
-                        <label>Movie description :<textarea ref="description" placeholder="Write movie description" className="form-control" rows="4" cols="50" required/></label><br />
-                        <button type="submit">Add new movie</button>
-                    </form>
-                    </div>
-                  </li>
+       element = <AddMovie onAddMovie={this.addMovie.bind(this)} />
     }
 
     if(this.state.movies_list !== false){
