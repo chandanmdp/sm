@@ -76,14 +76,14 @@ class MoviesList extends Component {
         name: Name,
         year: Year,
         description: Description
-      },
-      movies_list: false
+      }
     },function(){
       var id = this.state.movie.id;
-      var movies2 = this.state.movies;
-      movies2[id-1] = this.state.movie;
+      var updated_movies = this.state.movies;
+      updated_movies[id-1] = this.state.movie;
       this.setState({
-        movies: movies2
+        movies: updated_movies,
+        movies_list: false
       })
       alert('Movie updated successfully')
     })
