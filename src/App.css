@@ -1,0 +1,79 @@
+.App {
+  text-align: center;
+}
+.block{
+  background: #f1f1f1;
+  border:1px solid #ccddff;
+  margin-bottom:15px;
+  box-shadow: 3px 3px 3px #b3ccff;
+}
+.text-bigger{
+  font-size: 22px;
+}
+.text-biggest{
+  font-size: 28px;
+  color:#bc4805;
+}
+.margin{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.new-movie{
+  background: #f1f1f1;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+  border-radius: 10px;
+  border:1px solid #ccddff;
+  box-shadow: 3px 3px 3px #b3ccff;
+}
+.search-box{
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.search-box {
+  width: 35%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('./img/searchicon.png');
+  background-size: 30px 30px;
+  background-position: 8px 8px;
+  background-repeat: no-repeat;
+  padding: 10px 20px 10px 50px;
+  position: relative;
+  bottom: 5px;
+}
+.margin-right{
+  margin-right:20px;
+}
+.margin-left{
+  margin-left:50px;
+}
+.input-width{
+  width: 350px;
+}
+.update-block{
+  border:1px solid gray;
+  margin: 50px;
+  padding: 30px;
+  background: #e6fff2;
+}
+span.back-link{
+  text-decoration: underline;
+  cursor: pointer;
+}
+.bg-orangish{
+  background: #ffdb4d;
+}
+h1.bg-orangish{
+  padding: 10px;
+}
+input:required, textarea:required {
+    box-shadow:none;
+}
+span.movie-link{
+  cursor:pointer;
+}
