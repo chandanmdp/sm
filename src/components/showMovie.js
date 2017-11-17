@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import '../App.css';
-import UpdateMovie from './UpdateMovie';
+import UpdateMovie from './updateMovie';
 
 class ShowMovie extends Component {
 
   handleUpdate(id,Name,Year,Description){
     this.props.onUpdate(id,Name,Year,Description);
   }
-
-
 
   btnClick(){
     this.props.clickButton();
