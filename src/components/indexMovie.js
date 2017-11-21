@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ShowMovie from './showMovie';
 import AddMovie from './addMovie';
+import SearchMovie from './searchMovie';
 import MyJson from '../json/movies.json';
 
 class IndexMovie extends Component {
@@ -14,10 +15,10 @@ class IndexMovie extends Component {
         id: 0,
         name: '',
         year: '',
+        date: new Date(),
         description: ''
       },
-      movies_list: false,
-      add_movie: false
+      movies_list: false
     };
   }
 
@@ -37,16 +38,15 @@ class IndexMovie extends Component {
     )
   }
 
-  addMovie(Name,Year,Description){
-    var Id = this.state.movies.length
-      this.setState(
-        {
-          movies: this.state.movies.concat({id:Id+1,name:Name,year:Year,description:Description}),
-          search_name: '',
-          search_year: '',
-          add_movie: true
-        }
-      )
+  addMovie(Name,Year,Description,releaseDate){
+    let Id = this.state.movies.length
+    this.setState(
+      {
+        movies: this.state.movies.concat({id:Id+1,name:Name,year:Year,date:releaseDate,description:Description}),
+        search_name: '',
+        search_year: ''
+      }
+    )
   }
 
   showThisMovie(name){
@@ -58,20 +58,22 @@ class IndexMovie extends Component {
     })
   }
 
-  update(Id,Name,Year,Description){
+  updateDetails(Id,Name,ReleaseDate,Year,Description){
+    console.log(Id,Name,ReleaseDate,Year,Description)
     this.setState({
       movie:{
         id: Id,
         name: Name,
         year: Year,
+        date: ReleaseDate,
         description: Description
       }
     },function(){
-      var id = this.state.movie.id;
-      var updated_movies = this.state.movies;
-      updated_movies[id-1] = this.state.movie;
+      let id = this.state.movie.id;
+      let copied_movies = this.state.movies;
+      copied_movies[id-1] = this.state.movie;
       this.setState({
-        movies: updated_movies,
+        movies: copied_movies,
         movies_list: false
       })
       alert('Movie updated successfully')
@@ -94,73 +96,70 @@ class IndexMovie extends Component {
     let filteredMovieNames = this.state.movies.filter(
       (movie) => {
         var counter = 0;
-        var movies_array = movie.name.split(' ');
-
+        let movies_array = movie.name.split(' ');
         movies_array.map(item =>
           {
             if (item.toLowerCase().indexOf(this.state.search_name.toLowerCase()) === 0) {
-            counter = 1;
+              counter = 1;
             }
             return false;
           })
-        if ( counter === 1)
-        {
-          return true;
-        }else{
-          return false;
+          if ( counter === 1)
+          {
+            return true;
+          }else{
+            return false;
+          }
         }
+      )
+
+      let filteredMovieYears = this.state.movies.filter(
+        (movie) => {
+          return movie.year.indexOf(this.state.search_year) === 0 ;
+        }
+      )
+
+      let commonValues = filteredMovieNames.filter(function(value) {
+        return filteredMovieYears.indexOf(value) > -1;
+      });
+
+      if (commonValues.length > 0){
+        var element =  commonValues.map((movie) => {
+          var d = new Date(movie.date);
+          return (
+            <div className="block" key={movie.name}>
+              <li className="text-bigger text-info text-center margin" key={movie.name}>
+              <span className="movie-link" onClick={this.showThisMovie.bind(this,movie.name)}>{movie.name} </span>
+              </li>
+            </div>
+          )
+        })
       }
-    )
-
-    let filteredMovieYears = this.state.movies.filter(
-      (movie) => {
-        return movie.year.indexOf(this.state.search_year) === 0 ;
+      else {
+        element = <AddMovie onAddMovie={this.addMovie.bind(this)} />
       }
-    )
 
-    var commonValues = filteredMovieNames.filter(function(value) {
-                      return filteredMovieYears.indexOf(value) > -1;
-    });
+      if(this.state.movies_list !== false){
+        element = <ShowMovie movie={this.state.movie} onUpdate={this.updateDetails.bind(this)} clickButton={this.backButton.bind(this)} />
+      }
 
-    if (commonValues.length > 0){
-      var element =  commonValues.map((movie) => {
-        return (
-          <div className="block">
-            <li className="text-bigger text-info text-center margin" >
-              <span className="movie-link" onClick={this.showThisMovie.bind(this,movie.name)}>{movie.name}</span>
-            </li>
-         </div>
-        )
-      })
-    }
-    else {
-       element = <AddMovie onAddMovie={this.addMovie.bind(this)} />
-    }
+      var st = "Nov 21 2017";
 
-    if(this.state.movies_list !== false){
-      element = <ShowMovie movie={this.state.movie} onUpdate={this.update.bind(this)} clickButton={this.backButton.bind(this)} />
-    }
-
-    return (
-      <div>
-        <div className="bg-info">
-          <div className="container">
-            <div className="text-center">
-            <span className="text-biggest margin-right">Search movies :</span>
-              <input type="text" className="search-box margin-right" placeholder="Movie name" value={this.state.search_name} onChange={this.updateSearchName.bind(this)} onClick={this.onSearch.bind(this)} />
-              <input type="text" className="search-box" placeholder="Release year" value={this.state.search_year} onChange={this.updateSearchYear.bind(this)} onClick={this.onSearch.bind(this)}/>
+      return (
+        <div>
+          <div className="bg-info">
+            <div className="container">
+              <SearchMovie search_name={this.state.search_name} search_year={this.state.search_year} onSearchMovie={this.onSearch.bind(this)} updateName={this.updateSearchName.bind(this)} updateYear={this.updateSearchYear.bind(this)} />
             </div>
           </div>
+          <div className="container margin">
+            <ul className="list-unstyled">
+              {element}
+            </ul>
+          </div>
         </div>
-        <div className="container margin">
-          <ul className="list-unstyled">
-            {element}
-          </ul>
-        </div>
-      </div>
-    )
+      )
+    }
   }
 
-}
-
-export default IndexMovie;
+  export default IndexMovie;

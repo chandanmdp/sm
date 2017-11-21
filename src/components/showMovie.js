@@ -14,18 +14,17 @@ class ShowMovie extends Component {
 
   render () {
     return (
-        <div>
-          <div className="block">
-            <li className="margin margin-left" >
-              <span className="back-link text-primary" onClick={this.btnClick.bind(this)}>Back</span><br/><br/>
-              <h2 className="text-info">{this.props.movie.name}</h2>
-              <p>{this.props.movie.description}</p>
-              <span className= "text-info">Release Year: {this.props.movie.year}</span>
-            </li>
-            <UpdateMovie onUpdate={this.handleUpdate.bind(this)} movie={this.props.movie} />
-          </div>
-        </div>
-      )
+      <div className="block">
+        <li className="margin margin-left margin-right" >
+          <span className="back-link text-primary" onClick={this.btnClick.bind(this)}>Back</span><br/><br/>
+          <h2 className="text-info">{this.props.movie.name}</h2>
+          <p>{this.props.movie.description}</p>
+          <span className= "text-info">Release Year: {this.props.movie.year}</span><br/>
+          <span className= "text-info">Release Date: {this.props.movie.date}</span>
+        </li>
+      <UpdateMovie onUpdate={this.handleUpdate.bind(this)} movie={this.props.movie} />
+      </div>
+    )
   }
 }
 
